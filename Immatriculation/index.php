@@ -105,7 +105,7 @@ if (isset($_GET['action']) && $_GET['action'] == "logout") {
                             Homologation
                         </a>
                         <ul class="dropdown-menu p-0">
-                            <li><a href="?route=liste_pv_chassis" class="dropdown-item <?= isset($_GET['route']) && $_GET['route'] == 'liste_pv_chassis' ? 'active' : '' ?>">Chassis</a></li>
+                            <li><a href="?route=liste_pv_chassis" class="dropdown-item <?= isset($_GET['route']) && $_GET['route'] == 'liste_pv_chassis' ? 'active' : '' ?>">Chassis Numéro</a></li>
                             <li><a href="?route=create_pv_chassis" class="dropdown-item <?= isset($_GET['route']) && $_GET['route'] == 'create_pv_chassis' ? 'active' : '' ?>">Caractéristique</a></li>
                         </ul>
                     </div>
