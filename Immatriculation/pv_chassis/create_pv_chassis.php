@@ -29,12 +29,14 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     $pv = $_POST['pv'];
     $cu = htmlspecialchars(trim($_POST['cu']));
     $ptac = $_POST['ptac'];
+    $puissance = $_POST['puissance'];
+    $nbrEssieux = $_POST['nbrEssieux'];
     $date = $_POST['date'];
 
     // Insertion des données dans la base
     try {
-        $insert_sql = "INSERT INTO pvchassis (nom, marque, genre, immat, carrosserie, type, energie, chassis, pv, cu, ptac, date_pv)
-                    VALUES (:nom, :marque, :genre, :immat, :carrosserie, :type, :energie, :chassis, :pv, :cu, :ptac, :date_pv)";
+        $insert_sql = "INSERT INTO pvchassis (nom, marque, genre, immat, carrosserie, type, energie, chassis, puissance, nbrEssieux, pv, cu, ptac, date_pv)
+                    VALUES (:nom, :marque, :genre, :immat, :carrosserie, :type, :energie, :chassis, :pv, :puissance, :nbrEssieux, :cu, :ptac, :date_pv)";
         $stmt = $conn->prepare($insert_sql);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':marque', $marque);
@@ -46,6 +48,8 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         $stmt->bindParam(':chassis', $chassis);
         $stmt->bindParam(':pv', $pv);
         $stmt->bindParam(':cu', $cu);
+        $stmt->bindParam(':puissance', $puissance);
+        $stmt->bindParam(':nbrEssieux', $nbrEssieux);
         $stmt->bindParam(':ptac', $ptac);
         $stmt->bindParam(':date_pv', $date);
         $stmt->execute();
@@ -72,11 +76,22 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 <body>
     <div class="container mt-5 mb-5">
         <div class="card">
+        <?php if (isset($_GET['error'])): ?>
+        <div class="alert alert-danger">
+            <?php if ($_GET['error'] == 1): ?>
+            Une erreur est survenue lors de l'enregistrement. Veuillez réessayer plus tard.
+            <?php elseif ($_GET['error'] == 2): ?>
+            L'immatriculation existe déjà. Veuillez utiliser une autre immatriculation.
+            <?php elseif (isset($_GET['msg'])): ?>
+            <?= htmlspecialchars($_GET['msg']) ?>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
             <div class="card-header">
                 <h5 class="text-center">Saisie et Edition des PV d'Homologation des Chassis</h5>
             </div>
             <div class="card-body">
-                <form id="PvForm" action="" method="POST">
+                <form action="" method="POST">
                     <div class="row">
                         <!-- Immatriculation -->
                         <div class="col-md-6 mb-3">
@@ -150,7 +165,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 
                         <!-- PV -->
                         <div class="col-md-6 mb-3">
-                            <label for="pv" class="form-label">PV</label>
+                            <label for="pv" class="form-label">Poids à vide</label>
                             <input type="number" class="form-control" id="pv" name="pv" required>
                         </div>
                     </div>
@@ -158,7 +173,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
                     <div class="row">
                         <!-- cu -->
                         <div class="col-md-6 mb-3">
-                            <label for="cu" class="form-label">CU</label>
+                            <label for="cu" class="form-label">Charge utile</label>
                             <input type="number" class="form-control" id="cu" name="cu"
                                 required>
                         </div>
@@ -167,6 +182,21 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
                         <div class="col-md-6 mb-3">
                             <label for="ptac" class="form-label">Ptac</label>
                             <input type="number" class="form-control" id="ptac" name="ptac" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- puissance -->
+                        <div class="col-md-6 mb-3">
+                            <label for="puissance" class="form-label">Puissance</label>
+                            <input type="number" class="form-control" id="puissance" name="puissance"
+                                required>
+                        </div>
+
+                        <!-- nbrEssieux -->
+                        <div class="col-md-6 mb-3">
+                            <label for="nbrEssieux" class="form-label">Nombre d'essieux</label>
+                            <input type="number" class="form-control" id="nbrEssieux" name="nbrEssieux" required>
                         </div>
                     </div>
 
